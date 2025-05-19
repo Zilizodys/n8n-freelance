@@ -16,4 +16,6 @@ services:
       - key: N8N_USER_MANAGEMENT_DISABLED
         value: "true"
       - key: NODE_ENV
-        value: production 
+        value: production
+      - key: NODE_VERSION
+        value: 18.17.0 
