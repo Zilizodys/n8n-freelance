@@ -1,0 +1,33 @@
+{
+  "name": "n8n-freelance",
+  "version": "1.0.0",
+  "description": "Workflow n8n pour la recherche de missions freelance UX/UI",
+  "main": "workflow.json",
+  "scripts": {
+    "start": "n8n start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zilizodys/n8n-freelance.git"
+  },
+  "keywords": [
+    "n8n",
+    "freelance",
+    "ux",
+    "ui",
+    "automation"
+  ],
+  "author": "Zilizodys",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zilizodys/n8n-freelance/issues"
+  },
+  "homepage": "https://github.com/Zilizodys/n8n-freelance#readme",
+  "dependencies": {
+    "n8n": "^1.28.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 

@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: n8n-freelance
+    env: node
+    buildCommand: yarn install
+    startCommand: yarn start
+    envVars:
+      - key: N8N_PORT
+        value: 8080
+      - key: N8N_PROTOCOL
+        value: https
+      - key: N8N_HOST
+        value: n8n-freelance.onrender.com
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
+      - key: N8N_USER_MANAGEMENT_DISABLED
+        value: "true"
+      - key: NODE_ENV
+        value: production 
