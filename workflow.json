@@ -1,0 +1,216 @@
+{
+  "name": "Freelance UX/UI Director Job Finder",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "minutesInterval": 24
+            }
+          ]
+        }
+      },
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        50,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.freelancer.com/jobs/",
+        "options": {
+          "fullResponse": true
+        }
+      },
+      "name": "Freelancer.com Scraper",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.malt.fr/profile/",
+        "options": {
+          "fullResponse": true
+        }
+      },
+      "name": "Malt Scraper",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        250,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.welcometothejungle.com/fr/jobs",
+        "options": {
+          "fullResponse": true
+        }
+      },
+      "name": "Welcome to the Jungle Scraper",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        250,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.upwork.com/nx/jobs/search/",
+        "options": {
+          "fullResponse": true
+        }
+      },
+      "name": "Upwork Scraper",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        250,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"title\"]}}",
+              "operation": "contains",
+              "value2": "UX"
+            },
+            {
+              "value1": "={{$json[\"title\"]}}",
+              "operation": "contains",
+              "value2": "UI"
+            },
+            {
+              "value1": "={{$json[\"title\"]}}",
+              "operation": "contains",
+              "value2": "Art Director"
+            }
+          ]
+        }
+      },
+      "name": "Filter Jobs",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        450,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "channel": "={{$env.SLACK_CHANNEL}}",
+        "text": "=🆕 Nouvelle opportunité freelance UX/UI !\n\n*Plateforme:* {{$json[\"source\"]}}\n*Titre:* {{$json[\"title\"]}}\n*Description:* {{$json[\"description\"]}}\n*Lien:* {{$json[\"url\"]}}",
+        "otherOptions": {
+          "username": "Freelance Job Bot"
+        }
+      },
+      "name": "Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [
+        650,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "to": "={{$env.WHATSAPP_NUMBER}}",
+        "message": "=🆕 Nouvelle opportunité freelance UX/UI !\n\nPlateforme: {{$json[\"source\"]}}\nTitre: {{$json[\"title\"]}}\nDescription: {{$json[\"description\"]}}\nLien: {{$json[\"url\"]}}"
+      },
+      "name": "WhatsApp",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        650,
+        500
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Freelancer.com Scraper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Freelancer.com Scraper": {
+      "main": [
+        [
+          {
+            "node": "Filter Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Malt Scraper": {
+      "main": [
+        [
+          {
+            "node": "Filter Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Welcome to the Jungle Scraper": {
+      "main": [
+        [
+          {
+            "node": "Filter Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upwork Scraper": {
+      "main": [
+        [
+          {
+            "node": "Filter Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Jobs": {
+      "main": [
+        [
+          {
+            "node": "Slack",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+} 
